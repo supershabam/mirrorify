@@ -23,6 +23,18 @@ function files(module) {
   })
 }
 
+function fileStream(module, filename) {
+  return new Promise(function(resolve, reject) {
+    var file = path.resolve(directory, module + '/' + filename)
+    fs.exists(file, function(exists) {
+      if (!exists) {
+        return reject(new Error('file does not exist'))
+      }
+      resolve(fs.createReadStream(file))
+    })
+  })
+}
+
 function downloadAttachment(module, attachment) {
   return new Promise(function(resolve, reject) {
     var dir = path.resolve(directory, module)
@@ -66,7 +78,9 @@ function directoryFiles(module) {
       if (files.length === 0) {
         return reject(new Error('found no files for module ' + module))
       }
-      resolve(files)
+      resolve(files.map(function(file) {
+        return path.basename(file)
+      }))
     })
   })
 }
@@ -79,4 +93,20 @@ app.param('module', function(req, res, next, module) {
   }, next)
 })
 
-files('2').then(console.log, console.error)
+app.get('/favicon.ico', function(req, res, next) {
+  res.send(201)
+})
+
+app.get('/:module', function(req, res, next) {
+  res.json({
+    files: req.files
+  })
+})
+
+app.get('/:module/:file', function(req, res, next) {
+  fileStream(req.module, req.params.file).then(function(stream) {
+    stream.pipe(res)
+  }, next)
+})
+
+app.listen(port)
