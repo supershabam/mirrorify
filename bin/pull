@@ -6,5 +6,9 @@ var version = target.split('@')[1]
 var couch = nano(process.env.COUCHDB_URI || 'http://localhost:5984')
 var registry = couch.use(process.env.COUCHDB_DATABASE || 'registry')
 var attachment = module + '-' + version + '.tgz'
-registry.attachment.get(module, attachment).pipe(process.stdout)
+registry.attachment.get(module, attachment)
+  .pipe(process.stdout)
+  .on('error', function(err) {
+    console.log('EREREREER', err)
+  })
 
