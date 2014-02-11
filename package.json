@@ -4,7 +4,6 @@
   "description": "utilities for turning an npm couch into an http tarball mirror",
   "main": "index.js",
   "dependencies": {
-    "nopt": "~2.1.2",
     "nano": "~4.4.0"
   },
   "devDependencies": {},
