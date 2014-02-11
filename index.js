@@ -17,7 +17,9 @@ app.use(express.logger())
 
 function files(module) {
   return directoryFiles(module).catch(function(err) {
-    return fetchCouchFiles(module)
+    return fetchCouchFiles(module).then(function() {
+      return directoryFiles(module)
+    })
   })
 }
 
@@ -29,7 +31,10 @@ function downloadAttachment(module, attachment) {
         return reject(err)
       }
       var file = dir + '/' + attachment
-      registry.attachment.get(module, attachment).pipe(fs.createWriteStream(file))
+      var stream = registry.attachment.get(module, attachment)
+      stream.pipe(fs.createWriteStream(file))
+      stream.on('end', resolve)
+      stream.on('error', reject)
     })
   })
 }
@@ -46,9 +51,7 @@ function fetchCouchFiles(module) {
       var promises = Object.keys(doc._attachments).map(function(attachment) {
         return downloadAttachment(module, attachment)
       })
-      Promise.all(promises).then(function() {
-        return Object.keys(doc._attachments)
-      }, reject)
+      resolve(Promise.all(promises))
     })
   })
 }
