@@ -17,7 +17,7 @@ app.use(express.logger())
 
 function files(module) {
   return directoryFiles(module).catch(function(err) {
-    return fetchCouchFiles(module).then(function() {
+    return fetchCouchAttachments(module).then(function() {
       return directoryFiles(module)
     })
   })
@@ -39,7 +39,7 @@ function downloadAttachment(module, attachment) {
   })
 }
 
-function fetchCouchFiles(module) {
+function fetchCouchAttachments(module) {
   return new Promise(function(resolve, reject) {
     registry.get(module, function(err, doc) {
       if (err) {
