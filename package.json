@@ -1,6 +1,6 @@
 {
   "name": "mirrorify",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "lazily mirror npm tarballs from a couchdb source",
   "main": "index.js",
   "dependencies": {
@@ -15,5 +15,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ian@supershabam.com",
+  "bugs": {
+    "url": "https://github.com/supershabam/mirrorify/issues"
+  },
+  "homepage": "https://github.com/supershabam/mirrorify",
   "license": "MIT"
 }
