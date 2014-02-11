@@ -4,7 +4,11 @@
   "description": "utilities for turning an npm couch into an http tarball mirror",
   "main": "index.js",
   "dependencies": {
-    "nano": "~4.4.0"
+    "nano": "~4.4.0",
+    "express": "~3.4.8",
+    "glob": "~3.2.8",
+    "rsvp": "~3.0.3",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {},
   "scripts": {
